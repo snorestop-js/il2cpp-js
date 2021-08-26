@@ -30,10 +30,10 @@ export class Il2CppString {
   }
 
   getLength(): number {
-    return new Uint32Array(__IL2CPP.snorestop_create_buffer(4, this.ptr + 8)).at(0)!;
+    return new Uint32Array(__IL2CPP.snorestop_create_buffer_readonly(4, this.ptr + 8)).at(0)!;
   }
 
   getContents(): string {
-    return Buffer.from(__IL2CPP.snorestop_create_buffer(this.getLength() * 2, this.ptr + 12)).toString("utf16le");
+    return Buffer.from(__IL2CPP.snorestop_create_buffer_readonly(this.getLength() * 2, this.ptr + 12)).toString("utf16le");
   }
 }

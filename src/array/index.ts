@@ -1,4 +1,5 @@
 import { inspect } from "util";
+import { Il2CppClass } from "../class";
 
 export class Il2CppArray<T> {
   private static cache: Map<IntPtr<"Il2CppArray">, Il2CppArray<any>> = new Map();
@@ -31,5 +32,9 @@ export class Il2CppArray<T> {
 
   getSize(): number {
     return __IL2CPP.il2cpp_array_get_byte_length(this.ptr);
+  }
+
+  getClass(): Il2CppClass {
+    return Il2CppClass.fromPointer((new Uint32Array(__IL2CPP.snorestop_create_buffer_readonly(4, this.ptr))[0]) as IntPtr<any>)
   }
 }

@@ -93,7 +93,8 @@ namespace __IL2CPP {
   function il2cpp_field_get_parent(field: IntPtr<"FieldInfo">): IntPtr<"Il2CppClass">;
   function il2cpp_field_get_offset(field: IntPtr<"FieldInfo">): number;
   function il2cpp_field_get_type(field: IntPtr<"FieldInfo">): IntPtr<"Il2CppType">;
-  function il2cpp_field_get_value(object: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, value: IntPtr<any>): void;
+  function il2cpp_field_get_value(object: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, asBuffer: true, bufferSize: number): ArrayBuffer;
+  function il2cpp_field_get_value(object: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, asBuffer: false, bufferSize: number): number;
   function il2cpp_field_get_value_object(object: IntPtr<"FieldInfo">, obj: IntPtr<"Il2CppObject">): IntPtr<"Il2CppObject">;
   function il2cpp_field_has_attribute(field: IntPtr<"FieldInfo">, attr_class: IntPtr<"Il2CppClass">): boolean;
   function il2cpp_field_set_value(obj: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, value: IntPtr<any>): void;
@@ -145,7 +146,7 @@ namespace __IL2CPP {
   function il2cpp_method_get_class(method: IntPtr<"MethodInfo">): IntPtr<"Il2CppClass">;
   function il2cpp_method_has_attribute(method: IntPtr<"MethodInfo">, attr_class: IntPtr<"Il2CppClass">): boolean;
   function il2cpp_method_get_declaring_type(method: IntPtr<"MethodInfo">): IntPtr<"Il2CppClass">;
-  function il2cpp_method_get_flags(method: IntPtr<"MethodInfo">, implementation_flags: IntPtr<number>): void;
+  function il2cpp_method_get_flags(method: IntPtr<"MethodInfo">): number;
   function il2cpp_method_get_token(method: IntPtr<"MethodInfo">): number;
   function il2cpp_method_get_param_name(method: IntPtr<"MethodInfo">, index: number): string;
 
@@ -240,4 +241,5 @@ namespace __IL2CPP {
   function il2cpp_class_for_each(callback: (klass: IntPtr<"Il2CppClass">, userData: IntPtr<any>) => void, userData: IntPtr<any>): void;
 
   function snorestop_create_buffer<T>(size: number, ptr: number): SnorestopArrayBuffer<T>
+  function snorestop_create_buffer_readonly<T>(size: number, ptr: number): SnorestopArrayBuffer<T>
 }

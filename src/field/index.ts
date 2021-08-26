@@ -6,25 +6,31 @@ import { Il2CppObject } from "../object";
 import { Il2CppString } from "../string";
 import { Il2CppType } from "../type";
 
-export class Il2CppField {
-  private static cache: Map<IntPtr<"FieldInfo">, Il2CppField> = new Map();
+export class Il2CppStaticField {
+  private static cache: Map<IntPtr<"FieldInfo">, Il2CppStaticField> = new Map();
 
   private constructor(
     private ptr: IntPtr<"FieldInfo">,
   ) {
     if (ptr === 0) throw new Error("Constructed FieldInfo with NullPtr");
 
-    Il2CppField.cache.set(ptr, this);
+    if (!this.getType().isStatic()) throw new Error("Constructed Il2CppStaticField with InstanceField");
+
+    Il2CppStaticField.cache.set(ptr, this);
   }
 
-  static fromPointer(pointer: IntPtr<"FieldInfo">): Il2CppField {
+  static fromPointer(pointer: IntPtr<"FieldInfo">): Il2CppStaticField {
     if (this.cache.has(pointer)) return this.cache.get(pointer)!
 
-    return new Il2CppField(pointer);
+    return new Il2CppStaticField(pointer);
+  }
+
+  getPointer(): IntPtr<"FieldInfo"> {
+    return this.ptr;
   }
 
   [inspect.custom](): string {
-    return `[IL2CPP Field {${this.getParent().getName()}${this.getType().isStatic() ? "." : "#"}${this.getName()}} (0x${this.ptr.toString(16).padStart(8, "0")})]`
+    return `[IL2CPP Static Field {${this.getParent().getName()}.${this.getName()}} (0x${this.ptr.toString(16).padStart(8, "0")})]`
   }
 
   getName(): string {

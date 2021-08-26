@@ -1,6 +1,9 @@
 import { inspect } from "util";
 import { Il2CppClass } from "../class";
-import { Il2CppField } from "../field";
+import { Il2CppStaticField } from "../field";
+import { Il2CppInstanceField } from "../field/instance";
+import { Il2CppStaticMethod } from "../method";
+import { Il2CppInstanceMethod } from "../method/instance";
 
 export class Il2CppObject {
   private static cache: Map<IntPtr<"Il2CppObject">, Il2CppObject> = new Map();
@@ -31,7 +34,45 @@ export class Il2CppObject {
     return Il2CppClass.fromPointer(__IL2CPP.il2cpp_object_get_class(this.ptr));
   }
 
-  // getField(): Il2CppField {
-  //   return Il2CppField.fromPointer(IL2Cpp)
-  // }
+  getFields(): Il2CppInstanceField[] {
+    let instanceFields: Il2CppInstanceField[] = [];
+
+    this.getClass().getFields().forEach(field => {
+      if (field instanceof Il2CppInstanceField) {
+        instanceFields.push(Il2CppInstanceField.fromPointer(field.getPointer(), this));
+      }
+    })
+
+    return instanceFields;
+  }
+
+  getField(key: string): Il2CppInstanceField | undefined {
+    const field = this.getClass().getField(key);
+
+    if (field === undefined) return undefined;
+    if (field instanceof Il2CppStaticField) return undefined;
+
+    return Il2CppInstanceField.fromPointer(field.getPointer(), this);
+  }
+
+  getMethods(): Il2CppInstanceMethod[] {
+    let instanceMethods: Il2CppInstanceMethod[] = [];
+
+    this.getClass().getMethods().forEach(method => {
+      if (method instanceof Il2CppInstanceMethod) {
+        instanceMethods.push(Il2CppInstanceMethod.fromPointer(method.getPointer(), this));
+      }
+    })
+
+    return instanceMethods;
+  }
+
+  getMethod(key: string, argCount: number): Il2CppInstanceMethod | undefined {
+    const method = this.getClass().getMethod(key, argCount);
+
+    if (method === undefined) return undefined;
+    if (method instanceof Il2CppStaticMethod) return undefined;
+
+    return Il2CppInstanceMethod.fromPointer(method.getPointer(), this);
+  }
 }

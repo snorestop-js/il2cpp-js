@@ -17,6 +17,10 @@ export class Il2CppType {
     return new Il2CppType(pointer);
   }
 
+  getPointer(): IntPtr<"Il2CppType"> {
+    return this.ptr;
+  }
+
   [inspect.custom](): string {
     return `[IL2CPP ${this.isStatic() ? "Static " : ""}Type {${this.getName()}} (0x${this.ptr.toString(16).padStart(8, "0")})]`
   }
