@@ -1,4 +1,3 @@
-import { ComponentSpawnEvent } from "@skeldjs/client";
 import { inspect } from "util";
 import { Il2CppTypeEnum } from "../../enums";
 import { Il2CppArray } from "../array";
