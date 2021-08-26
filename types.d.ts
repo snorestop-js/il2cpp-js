@@ -1,30 +1,6 @@
 type IntPtr<T> = number & { _____: T };
 type SnorestopArrayBuffer<T> = ArrayBuffer & { address: IntPtr<T> }
 
-enum Il2CppStat {
-  IL2CPP_STAT_NEW_OBJECT_COUNT,
-  IL2CPP_STAT_INITIALIZED_CLASS_COUNT,
-  //IL2CPP_STAT_GENERIC_VTABLE_COUNT,
-  //IL2CPP_STAT_USED_CLASS_COUNT,
-  IL2CPP_STAT_METHOD_COUNT,
-  //IL2CPP_STAT_CLASS_VTABLE_SIZE,
-  IL2CPP_STAT_CLASS_STATIC_DATA_SIZE,
-  IL2CPP_STAT_GENERIC_INSTANCE_COUNT,
-  IL2CPP_STAT_GENERIC_CLASS_COUNT,
-  IL2CPP_STAT_INFLATED_METHOD_COUNT,
-  IL2CPP_STAT_INFLATED_TYPE_COUNT,
-    //IL2CPP_STAT_DELEGATE_CREATIONS,
-    //IL2CPP_STAT_MINOR_GC_COUNT,
-    //IL2CPP_STAT_MAJOR_GC_COUNT,
-    //IL2CPP_STAT_MINOR_GC_TIME_USECS,
-    //IL2CPP_STAT_MAJOR_GC_TIME_USECS,
-}
-
-enum Il2CppRuntimeUnhandledExceptionPolicy {
-  IL2CPP_UNHANDLED_POLICY_LEGACY,
-  IL2CPP_UNHANDLED_POLICY_CURRENT,
-}
-
 namespace __IL2CPP {
   function il2cpp_init(domain_name: string): number;
   function il2cpp_shutdown(): void;
@@ -61,14 +37,14 @@ namespace __IL2CPP {
   function il2cpp_class_from_il2cpp_type(type: IntPtr<"Il2CppType">): IntPtr<"Il2CppClass">;
   function il2cpp_class_from_name(image: IntPtr<"Il2CppImage">, namespaze: string, name: string): IntPtr<"Il2CppClass">;
   function il2cpp_class_get_element_class(klass: IntPtr<"Il2CppClass">): IntPtr<"Il2CppClass">;
-  function il2cpp_class_get_events(klass: IntPtr<"Il2CppClass">, iter: IntPtr<number>): IntPtr<"EventInfo">;
-  function il2cpp_class_get_fields(klass: IntPtr<"Il2CppClass">, iter: IntPtr<number>): IntPtr<"FieldInfo">;
-  function il2cpp_class_get_nested_types(klass: IntPtr<"Il2CppClass">, iter: IntPtr<number>): IntPtr<"Il2CppClass">;
-  function il2cpp_class_get_interfaces(klass: IntPtr<"Il2CppClass">, iter: IntPtr<number>): IntPtr<"Il2CppClass">;
-  function il2cpp_class_get_properties(klass: IntPtr<"Il2CppClass">, iter: IntPtr<number>): IntPtr<"PropertyInfo">;
+  function il2cpp_class_get_events(klass: IntPtr<"Il2CppClass">): IntPtr<"EventInfo">[];
+  function il2cpp_class_get_fields(klass: IntPtr<"Il2CppClass">): IntPtr<"FieldInfo">[];
+  function il2cpp_class_get_nested_types(klass: IntPtr<"Il2CppClass">): IntPtr<"Il2CppClass">[];
+  function il2cpp_class_get_interfaces(klass: IntPtr<"Il2CppClass">): IntPtr<"Il2CppClass">[];
+  function il2cpp_class_get_properties(klass: IntPtr<"Il2CppClass">): IntPtr<"PropertyInfo">[];
   function il2cpp_class_get_property_from_name(klass: IntPtr<"Il2CppClass">, name: string): IntPtr<"PropertyInfo">;
   function il2cpp_class_get_field_from_name(klass: IntPtr<"Il2CppClass">, name: string): IntPtr<"FieldInfo">;
-  function il2cpp_class_get_methods(klass: IntPtr<"Il2CppClass">, iter: IntPtr<number>): IntPtr<"MethodInfo">;
+  function il2cpp_class_get_methods(klass: IntPtr<"Il2CppClass">): IntPtr<"MethodInfo">[];
   function il2cpp_class_get_method_from_name(klass: IntPtr<"Il2CppClass">, name: string, argsCount: number): IntPtr<"MethodInfo">;
   function il2cpp_class_get_name(klass: IntPtr<"Il2CppClass">): string;
   function il2cpp_class_get_namespace(klass: IntPtr<"Il2CppClass">): string;
@@ -122,7 +98,8 @@ namespace __IL2CPP {
   function il2cpp_field_has_attribute(field: IntPtr<"FieldInfo">, attr_class: IntPtr<"Il2CppClass">): boolean;
   function il2cpp_field_set_value(obj: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, value: IntPtr<any>): void;
   function il2cpp_field_set_value_object(objectInstance: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, value: IntPtr<"Il2CppObject">): void;
-  function il2cpp_field_static_get_value(field: IntPtr<"FieldInfo">, value: IntPtr<any>): void;
+  function il2cpp_field_static_get_value(field: IntPtr<"FieldInfo">, asBuffer: true, bufferSize: number): ArrayBuffer;
+  function il2cpp_field_static_get_value(field: IntPtr<"FieldInfo">, asBuffer: false, bufferSize: number): number;
   function il2cpp_field_static_set_value(field: IntPtr<"FieldInfo">, value: IntPtr<any>): void;
   function il2cpp_field_is_literal(field: IntPtr<"FieldInfo">): boolean;
 
@@ -178,14 +155,14 @@ namespace __IL2CPP {
   function il2cpp_property_get_parent(prop: IntPtr<"PropertyInfo">): IntPtr<"Il2CppClass">;
   function il2cpp_property_get_flags(prop: IntPtr<"PropertyInfo">): number;
 
-  function  il2cpp_object_get_class(obj: IntPtr<"Il2CppObject">): IntPtr<"Il2CppClass">;
+  function il2cpp_object_get_class(obj: IntPtr<"Il2CppObject">): IntPtr<"Il2CppClass">;
   function il2cpp_object_get_size(obj: IntPtr<"Il2CppObject">): number;
   function il2cpp_object_get_virtual_method(obj: IntPtr<"Il2CppObject">, method: IntPtr<"MethodInfo">): IntPtr<"MethodInfo">;
   function il2cpp_object_new(klass: IntPtr<"Il2CppClass">): IntPtr<"Il2CppObject">;
   function il2cpp_object_unbox(obj: IntPtr<"Il2CppObject">): IntPtr<any>;
   function il2cpp_value_box(klass: IntPtr<"Il2CppClass">, data: IntPtr<any>): IntPtr<"Il2CppObject">;
 
-  function  il2cpp_monitor_enter(obj: IntPtr<"Il2CppObject">): void
+  function il2cpp_monitor_enter(obj: IntPtr<"Il2CppObject">): void
   function il2cpp_monitor_try_enter(obj: IntPtr<"Il2CppObject">, timeout: number): boolean;
   function il2cpp_monitor_exit(obj: IntPtr<"Il2CppObject">): void;
   function il2cpp_monitor_pulse(obj: IntPtr<"Il2CppObject">): void;
@@ -193,26 +170,26 @@ namespace __IL2CPP {
   function il2cpp_monitor_wait(obj: IntPtr<"Il2CppObject">): void;
   function il2cpp_monitor_try_wait(obj: IntPtr<"Il2CppObject">, timeout: number): void;
 
-  function  il2cpp_runtime_invoke_convert_args(method: IntPtr<"MethodInfo">, obj: IntPtr<any>, params: IntPtr<"Il2CppObject">[], exception: IntPtr<IntPtr<"Il2CppException">>): IntPtr<"Il2CppObject">;
+  function il2cpp_runtime_invoke_convert_args(method: IntPtr<"MethodInfo">, obj: IntPtr<any>, params: IntPtr<"Il2CppObject">[], exception: IntPtr<IntPtr<"Il2CppException">>): IntPtr<"Il2CppObject">;
   function il2cpp_runtime_invoke(method: IntPtr<"MethodInfo">, obj: IntPtr<any>, params: IntPtr<any>[], exception: IntPtr<IntPtr<"Il2CppException">>): IntPtr<"Il2CppObject">;
   function il2cpp_runtime_class_init(klass: IntPtr<"Il2CppClass">): void;
   function il2cpp_runtime_object_init(obj: IntPtr<"Il2CppObject">): void;
   function il2cpp_runtime_object_init_exception(obj: IntPtr<"Il2CppObject">, exc: IntPtr<IntPtr<"Il2CppException">>): void;
   function il2cpp_runtime_unhandled_exception_policy_set(value: Il2CppRuntimeUnhandledExceptionPolicy): void;
 
-  function  il2cpp_string_new(string: string): IntPtr<"Il2CppString">;
+  function il2cpp_string_new(string: string): IntPtr<"Il2CppString">;
   function il2cpp_string_new_wrapper(string: string): IntPtr<"Il2CppString">;
   function il2cpp_string_new_len(string: string, length: number): IntPtr<"Il2CppString">;
   function il2cpp_string_intern(str: IntPtr<"Il2CppString">): IntPtr<"Il2CppString">;
   function il2cpp_string_is_interned(str: IntPtr<"Il2CppString">): boolean;
 
-  function  il2cpp_thread_current(): IntPtr<"Il2CppThread">;
+  function il2cpp_thread_current(): IntPtr<"Il2CppThread">;
   function il2cpp_thread_attach(domain: IntPtr<"Il2CppDomain">): IntPtr<"Il2CppThread">;
   function il2cpp_thread_detach(thread: IntPtr<"Il2CppThread">): void;
   function il2cpp_thread_get_all_attached_threads(size: number): IntPtr<IntPtr<"Il2CppThread">>;
   function il2cpp_is_vm_thread(thread: IntPtr<"Il2CppThread">): boolean;
 
-  function  il2cpp_current_thread_walk_frame_stack(callback: (info: IntPtr<"Il2CppStackFrameInfo">, user_data: IntPtr<any>) => void, user_data: IntPtr<any>): void;
+  function il2cpp_current_thread_walk_frame_stack(callback: (info: IntPtr<"Il2CppStackFrameInfo">, user_data: IntPtr<any>) => void, user_data: IntPtr<any>): void;
   function il2cpp_thread_walk_frame_stack(thread: IntPtr<"Il2CppThread">, callback: (info: IntPtr<"Il2CppStackFrameInfo">, user_data: IntPtr<any>) => void, user_data: IntPtr<any>): void;
   function il2cpp_current_thread_get_top_frame(frame: IntPtr<"Il2CppStackFrameInfo">): boolean;
   function il2cpp_thread_get_top_frame(thread: IntPtr<"Il2CppThread">, frame: IntPtr<"Il2CppStackFrameInfo">): boolean;
@@ -223,7 +200,7 @@ namespace __IL2CPP {
   function il2cpp_set_default_thread_affinity(affinity_mask: bigint): void;
   function il2cpp_override_stack_backtrace(callback: (buffer: IntPtr<"Il2CppMethodPointer">, maxSize: number) => number): void;
 
-  function  il2cpp_type_get_object(type: IntPtr<"Il2CppType">): IntPtr<"Il2CppObject">;
+  function il2cpp_type_get_object(type: IntPtr<"Il2CppType">): IntPtr<"Il2CppObject">;
   function il2cpp_type_get_type(type: IntPtr<"Il2CppType">): number;
   function il2cpp_type_get_class_or_element_class(type: IntPtr<"Il2CppType">): IntPtr<"Il2CppClass">;
   function il2cpp_type_get_name(type: IntPtr<"Il2CppType">): string;
@@ -234,30 +211,33 @@ namespace __IL2CPP {
   function il2cpp_type_is_static(type: IntPtr<"Il2CppType">): boolean;
   function il2cpp_type_is_pointer_type(type: IntPtr<"Il2CppType">): boolean;
 
-  function  il2cpp_image_get_assembly(image: IntPtr<"Il2CppImage">): IntPtr<"Il2CppAssembly">;
+  function il2cpp_image_get_assembly(image: IntPtr<"Il2CppImage">): IntPtr<"Il2CppAssembly">;
   function il2cpp_image_get_name(image: IntPtr<"Il2CppImage">): string;
   function il2cpp_image_get_filename(image: IntPtr<"Il2CppImage">): string;
   function il2cpp_image_get_entry_point(image: IntPtr<"Il2CppImage">): IntPtr<"MethodInfo">;
   function il2cpp_image_get_class_count(image: IntPtr<"Il2CppImage">): number;
   function il2cpp_image_get_class(image: IntPtr<"Il2CppImage">, index: number): IntPtr<"Il2CppClass">;
 
-  function  il2cpp_capture_memory_snapshot(): IntPtr<"Il2CppManagedMemorySnapshot">;
+  function il2cpp_capture_memory_snapshot(): IntPtr<"Il2CppManagedMemorySnapshot">;
   function il2cpp_free_captured_memory_snapshot(snapshot: IntPtr<"Il2CppManagedMemorySnapshot">): void;
 
-  function  il2cpp_set_find_plugin_callback(method: (arg_0: string) => string): void;
+  function il2cpp_set_find_plugin_callback(method: (arg_0: string) => string): void;
 
-  function  il2cpp_register_log_callback(callback: (arg_0: string) => void): void;
+  function il2cpp_register_log_callback(callback: (arg_0: string) => void): void;
 
   function il2cpp_unity_install_unitytls_interface(unitytlsInterfaceStruct: IntPtr<any>): void;
 
-  function  il2cpp_custom_attrs_from_class(klass: IntPtr<"Il2CppClass">): IntPtr<"Il2CppCustomAttrInfo">;
+  function il2cpp_custom_attrs_from_class(klass: IntPtr<"Il2CppClass">): IntPtr<"Il2CppCustomAttrInfo">;
   function il2cpp_custom_attrs_from_method(method: IntPtr<"MethodInfo">): IntPtr<"Il2CppCustomAttrInfo">;
   function il2cpp_custom_attrs_has_attr(ainfo: IntPtr<"Il2CppCustomAttrInfo">, attr_klass: IntPtr<"Il2CppClass">): boolean;
   function il2cpp_custom_attrs_get_attr(ainfo: IntPtr<"Il2CppCustomAttrInfo">, attr_klass: IntPtr<"Il2CppClass">): IntPtr<"Il2CppObject">;
   function il2cpp_custom_attrs_construct(ainfo: IntPtr<"Il2CppCustomAttrInfo">): IntPtr<"Il2CppArray">;
   function il2cpp_custom_attrs_free(ainfo: IntPtr<"Il2CppCustomAttrInfo">): void;
 
-  function  il2cpp_type_get_name_chunked(type: IntPtr<"Il2CppType">, callback: (data: IntPtr<any>, userData: IntPtr<any>) => void, userData: IntPtr<any>): void;
+  function il2cpp_type_get_name_chunked(type: IntPtr<"Il2CppType">, callback: (data: IntPtr<any>, userData: IntPtr<any>) => void, userData: IntPtr<any>): void;
   function il2cpp_class_set_userdata(klass: IntPtr<"Il2CppClass">, userdata: IntPtr<any>): void;
   function il2cpp_class_get_userdata_offset(): number;
-  function il2cpp_class_for_each(callback: (klass: IntPtr<"Il2CppClass">, userData: IntPtr<any>) => void, userData: IntPtr<any>): void;}
+  function il2cpp_class_for_each(callback: (klass: IntPtr<"Il2CppClass">, userData: IntPtr<any>) => void, userData: IntPtr<any>): void;
+
+  function snorestop_create_buffer<T>(size: number, ptr: number): SnorestopArrayBuffer<T>
+}

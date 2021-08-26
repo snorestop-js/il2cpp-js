@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/snorestop-js/il2cpp-js/issues"
   },
-  "homepage": "https://github.com/snorestop-js/il2cpp-js#readme"
+  "homepage": "https://github.com/snorestop-js/il2cpp-js#readme",
+  "devDependencies": {
+    "@types/node": "^16.7.2"
+  }
 }

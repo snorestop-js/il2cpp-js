@@ -1,4 +1,4 @@
-export { Assembly } from "./src/assembly";
-export { Domain } from "./src/domain";
-export { Class } from "./src/class";
-export { Image } from "./src/image";
+export { Il2CppAssembly } from "./src/assembly";
+export { Il2CppDomain } from "./src/domain";
+export { Il2CppClass } from "./src/class";
+export { Il2CppImage } from "./src/image";
