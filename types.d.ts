@@ -1,5 +1,5 @@
 type IntPtr<T> = number & { _____: T };
-type SnorestopArrayBuffer<T> = ArrayBuffer & { address: IntPtr<T> }
+type SnorestopArrayBuffer<T> = ArrayBuffer & { ptr: IntPtr<T> }
 
 namespace __IL2CPP {
   function il2cpp_init(domain_name: string): number;
@@ -240,6 +240,6 @@ namespace __IL2CPP {
   function il2cpp_class_get_userdata_offset(): number;
   function il2cpp_class_for_each(callback: (klass: IntPtr<"Il2CppClass">, userData: IntPtr<any>) => void, userData: IntPtr<any>): void;
 
-  function snorestop_create_buffer<T>(size: number, ptr: number): SnorestopArrayBuffer<T>
-  function snorestop_create_buffer_readonly<T>(size: number, ptr: number): SnorestopArrayBuffer<T>
+  function snorestop_create_buffer<T>(size: number, ptr?: number): SnorestopArrayBuffer<T>
+  function snorestop_create_buffer_readonly<T>(size: number, ptr?: number): SnorestopArrayBuffer<T>
 }
