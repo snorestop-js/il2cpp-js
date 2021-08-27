@@ -91,8 +91,8 @@ export class Il2CppClass {
     });
   }
 
-  getMethod(fieldName: string, argCount: number): (Il2CppStaticMethod | Il2CppInstanceMethod) | undefined {
-    const ptr = __IL2CPP.il2cpp_class_get_method_from_name(this.ptr, fieldName, argCount);
+  getMethod(methodName: string, argCount: number): (Il2CppStaticMethod | Il2CppInstanceMethod) | undefined {
+    const ptr = __IL2CPP.il2cpp_class_get_method_from_name(this.ptr, methodName, argCount);
 
     if (ptr === 0) return undefined;
 
