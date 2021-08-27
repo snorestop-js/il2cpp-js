@@ -5,6 +5,7 @@ import { Il2CppInstanceField } from "../field/instance";
 import { Il2CppStaticMethod } from "../method";
 import { Il2CppInstanceMethod } from "../method/instance";
 import { Il2CppType } from "../type";
+import { Il2CppObject } from "../object";
 
 export class Il2CppClass {
   private static cache: Map<IntPtr<"Il2CppClass">, Il2CppClass> = new Map();
@@ -41,6 +42,14 @@ export class Il2CppClass {
     }
 
     return `[IL2CPP Class {${this.getName()}} (0x${this.ptr.toString(16).padStart(8, "0")})]`
+  }
+
+  // WARNING: Untested!
+  construct(...parameters: any[]): Il2CppObject {
+    const object = Il2CppObject.fromPointer(__IL2CPP.il2cpp_object_new(this.ptr));
+    const constructor = object.getMethod(".ctor", parameters.length);
+    constructor?.invoke(...parameters)
+    return object;
   }
 
   getPointer(): IntPtr<"Il2CppClass"> {

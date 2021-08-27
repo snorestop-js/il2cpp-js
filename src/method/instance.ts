@@ -40,6 +40,7 @@ export class Il2CppInstanceMethod {
   invoke(...args: any[]): any {
     if (this.parent === undefined) throw new Error("Cannot call dangling InstanceMethod");
 
+    // TODO: build an error from the exception which would be returned
     return __IL2CPP.il2cpp_runtime_invoke_convert_args(this.ptr, this.parent.getPointer(), args, 0 as IntPtr<any>);
   }
 }

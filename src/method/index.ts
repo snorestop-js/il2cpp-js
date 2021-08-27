@@ -26,6 +26,7 @@ export class Il2CppStaticMethod {
   }
 
   invoke(...args: any[]): any {
+    // TODO: Find out why this crashes pre-startup, what is missing that the bepinex chain does?
     return __IL2CPP.il2cpp_runtime_invoke_convert_args(this.ptr, 0 as IntPtr<any>, args, 0 as IntPtr<any>);
   }
 }
