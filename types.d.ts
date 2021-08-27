@@ -97,11 +97,11 @@ namespace __IL2CPP {
   function il2cpp_field_get_value(object: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, asBuffer: false, bufferSize: number): number;
   function il2cpp_field_get_value_object(object: IntPtr<"FieldInfo">, obj: IntPtr<"Il2CppObject">): IntPtr<"Il2CppObject">;
   function il2cpp_field_has_attribute(field: IntPtr<"FieldInfo">, attr_class: IntPtr<"Il2CppClass">): boolean;
-  function il2cpp_field_set_value(obj: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, value: IntPtr<any>): void;
+  function il2cpp_field_set_value(obj: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, value: SnorestopArrayBuffer<any>): void;
   function il2cpp_field_set_value_object(objectInstance: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, value: IntPtr<"Il2CppObject">): void;
   function il2cpp_field_static_get_value(field: IntPtr<"FieldInfo">, asBuffer: true, bufferSize: number): ArrayBuffer;
   function il2cpp_field_static_get_value(field: IntPtr<"FieldInfo">, asBuffer: false, bufferSize: number): number;
-  function il2cpp_field_static_set_value(field: IntPtr<"FieldInfo">, value: IntPtr<any>): void;
+  function il2cpp_field_static_set_value(field: IntPtr<"FieldInfo">, value: SnorestopArrayBuffer<any>): void;
   function il2cpp_field_is_literal(field: IntPtr<"FieldInfo">): boolean;
 
   function il2cpp_gc_collect(maxGenerations: number): void;
