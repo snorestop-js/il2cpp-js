@@ -1,4 +1,3 @@
-type IntPtr<T> = number & { _____: T };
 type SnorestopArrayBuffer<T> = ArrayBuffer & { ptr: IntPtr<T> }
 
 namespace __IL2CPP {
@@ -70,9 +69,8 @@ namespace __IL2CPP {
   function il2cpp_class_get_rank(klass: IntPtr<"Il2CppClass">): number;
   function il2cpp_class_get_data_size(klass: IntPtr<"Il2CppClass">): number;
   function il2cpp_class_get_static_field_data(klass: IntPtr<"Il2CppClass">): IntPtr<any>;
-
   function il2cpp_class_get_bitmap_size(klass: IntPtr<"Il2CppClass">): number;
-  function il2cpp_class_get_bipmap(klass: IntPtr<"Il2CppClass">, size_t: IntPtr<number>): void;
+  function il2cpp_class_get_bitmap(klass: IntPtr<"Il2CppClass">): number;
 
   function il2cpp_stats_dump_to_file(path: string): boolean;
   function il2cpp_stats_get_value(stat: Il2CppStat): number;
@@ -242,4 +240,33 @@ namespace __IL2CPP {
 
   function snorestop_create_buffer<T>(size: number, ptr?: number): SnorestopArrayBuffer<T>
   function snorestop_create_buffer_readonly<T>(size: number, ptr?: number): SnorestopArrayBuffer<T>
+}
+
+declare class MemoryView<T> {
+  static alloc(size: number): MemoryView<T>;
+  static fromPointer(ptr: IntPtr<T>): MemoryView<T>;
+  readU8(byteIndex?: number): number;
+  readI8(byteIndex?: number): number;
+  readU16(byteIndex?: number): number;
+  readI16(byteIndex?: number): number;
+  readU32(byteIndex?: number): number;
+  readI32(byteIndex?: number): number;
+  readU64(byteIndex?: number): bigint;
+  readI64(byteIndex?: number): bigint;
+  readF32(byteIndex?: number): number;
+  readF64(byteIndex?: number): number;
+  readCString(byteIndex?: number): string;
+  readString(length: number, byteIndex?: number): string;
+  readPointer<T2 = any>(byteIndex?: number): MemoryView<T2>;
+  writeU8(value: number, byteIndex?: number): void;
+  writeI8(value: number, byteIndex?: number): void;
+  writeU16(value: number, byteIndex?: number): void;
+  writeI16(value: number, byteIndex?: number): void;
+  writeU32(value: number, byteIndex?: number): void;
+  writeI32(value: number, byteIndex?: number): void;
+  writeU64(value: bigint, byteIndex?: number): void;
+  writeI64(value: bigint, byteIndex?: number): void;
+  writeCString(value: string, byteIndex?: number): string;
+  writeString(value: string, byteIndex?: number): string;
+  getHead(): IntPtr<unknown>;
 }

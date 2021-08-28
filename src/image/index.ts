@@ -1,59 +1,45 @@
-import { inspect } from "util";
 import { Il2CppAssembly } from "../assembly";
 import { Il2CppClass } from "../class";
-
-export class Il2CppImage {
-  private static cache: Map<IntPtr<"Il2CppImage">, Il2CppImage> = new Map();
-
-  private constructor(
-    private ptr: IntPtr<"Il2CppImage">,
-  ) {
-    if (ptr === 0) throw new Error("Constructed Il2CppImage with NullPtr");
-
-    Il2CppImage.cache.set(ptr, this);
+import { Il2CppStaticMethod } from "../method/static";
+import { Il2CppReference } from "../reference";
+import util from "util";
+export class Il2CppImage extends Il2CppReference<"Il2CppImage"> {
+  [util.inspect.custom](): string {
+    return `[Il2CppDomain (${this.getPointer().toString(16).padStart(8, "0")})] { \n  name: "${this.getName()}"\n  classCount: ${this.getClassCount()}\n}`
   }
 
-  static fromPointer(pointer: IntPtr<"Il2CppImage">) {
-    if (this.cache.has(pointer)) return this.cache.get(pointer)!;
-
-    return new Il2CppImage(pointer);
+  getAssembly(): Il2CppAssembly {
+    return __IL2CPP.il2cpp_image_get_assembly(this.getPointer()).asPointer().of(Il2CppAssembly);
   }
 
-  [inspect.custom](): string {
-    return `[IL2CPP Image (0x${this.ptr.toString(16).padStart(8, "0")})]`
-  }
+  getAllClasses(): Il2CppClass[] {
+    const classCount = __IL2CPP.il2cpp_image_get_class_count(this.getPointer());
+    const classes = new Array<Il2CppClass>(classCount);
 
-  getPointer(): IntPtr<"Il2CppImage"> {
-    return this.ptr;
-  }
-
-  getClasses(): Il2CppClass[] {
-    const classes: Il2CppClass[] = new Array(__IL2CPP.il2cpp_image_get_class_count(this.ptr));
-
-    for (let i = 0; i < classes.length; i++) {
-      classes[i] = Il2CppClass.fromPointer(
-        __IL2CPP.il2cpp_image_get_class(this.ptr, i)
-      );
+    for (let i = 0; i < classCount; i++) {
+      classes[i] = __IL2CPP.il2cpp_image_get_class(this.getPointer(), i).asPointer().of(Il2CppClass);
     }
 
     return classes;
   }
 
-  findClassByName(namespace: string, name: string): Il2CppClass | undefined {
-    return Il2CppClass.fromName(this, namespace, name);
+  getClassCount(): number {
+    return __IL2CPP.il2cpp_image_get_class_count(this.getPointer());
   }
 
-  getName(): string {
-    return __IL2CPP.il2cpp_image_get_name(this.ptr);
+  getClass(index: number): Il2CppClass {
+    return __IL2CPP.il2cpp_image_get_class(this.getPointer(), index).asPointer().of(Il2CppClass);
   }
 
   getFilename(): string {
-    return __IL2CPP.il2cpp_image_get_filename(this.ptr);
+    return __IL2CPP.il2cpp_image_get_filename(this.getPointer());
   }
 
-  getAssembly(): Il2CppAssembly {
-    return Il2CppAssembly.fromPointer(
-      __IL2CPP.il2cpp_image_get_assembly(this.ptr),
-    );
+  getName(): string {
+    return __IL2CPP.il2cpp_image_get_name(this.getPointer());
+  }
+
+  getEntryPoint(): Il2CppStaticMethod {
+    return __IL2CPP.il2cpp_image_get_entry_point(this.getPointer()).asPointer().of(Il2CppStaticMethod);
   }
 }

@@ -1,56 +1,40 @@
-import { inspect } from "util";
 import { Il2CppAssembly } from "../assembly";
-import { Il2CppClass } from "../class";
+import { Il2CppReference } from "../reference";
+import util from "util";
 
-export class Il2CppDomain {
-  private static cache: Map<IntPtr<"Il2CppDomain">, Il2CppDomain> = new Map();
-
-  private constructor(
-    private ptr: IntPtr<"Il2CppDomain">,
-  ) {
-    if (ptr === 0) throw new Error("Constructed Il2CppDomain with NullPtr");
-
-    Il2CppDomain.cache.set(ptr, this);
-  }
-
+export class Il2CppDomain extends Il2CppReference<"Il2CppDomain"> {
   static get(): Il2CppDomain {
-    return this.fromPointer(__IL2CPP.il2cpp_domain_get());
+    return __IL2CPP.il2cpp_domain_get().asPointer().of(Il2CppDomain);
   }
 
-  static fromPointer(pointer: IntPtr<"Il2CppDomain">): Il2CppDomain {
-    if (this.cache.has(pointer)) this.cache.get(pointer)!;
-
-    return new Il2CppDomain(pointer);
+  [util.inspect.custom](): string {
+    return `[Il2CppDomain (${this.getPointer().toString(16).padStart(8, "0")})] { \n  name: "${this.getName()}"\n}`
   }
 
-  [inspect.custom](): string {
-    return `[IL2CPP Domain (0x${this.ptr.toString(16).padStart(8, "0")})]`
+  getAssemblies(): Il2CppAssembly[] {
+    return __IL2CPP.il2cpp_domain_get_assemblies(this.getPointer()).map(assemblyPtr => assemblyPtr.asPointer().of(Il2CppAssembly));
   }
 
-  getPointer(): IntPtr<"Il2CppDomain"> {
-    return this.ptr;
+  open(assembly: string): Il2CppAssembly {
+    return __IL2CPP.il2cpp_domain_assembly_open(this.getPointer(), assembly).asPointer().of(Il2CppAssembly);
   }
 
-  getAssemblies(): readonly Il2CppAssembly[] {
-    return __IL2CPP.il2cpp_domain_get_assemblies(this.ptr)
-      .map(assemblyPtr => Il2CppAssembly.fromPointer(assemblyPtr));
-  }
+  getName(): string {
+    const [friendly_name] = new Int32Array(__IL2CPP.snorestop_create_buffer_readonly(4, this.getPointer() + 12));
+    // const stringIndex = MemoryView.fromPointer(this.getPointer()).readI32(16);
 
-  openAssembly(name: string): Il2CppAssembly {
-    return Il2CppAssembly.fromPointer(
-      __IL2CPP.il2cpp_domain_assembly_open(this.ptr, name),
-    );
-  }
+    let i = 0;
+    let currChar = 0;
+    let str = "";
 
-  findClassByName(namespace: string, name: string): Il2CppClass | undefined {
-    const assemblies = this.getAssemblies();
+    do {
+      currChar = new Uint8Array(__IL2CPP.snorestop_create_buffer_readonly(1, friendly_name + (i++)))[0]
 
-    for (let i = 0; i < assemblies.length; i++) {
-      const klass = assemblies[i].getImage().findClassByName(namespace, name);
+      if (currChar !== 0) {
+        str += String.fromCharCode(currChar);
+      }
+    } while (currChar !== 0)
 
-      if (klass) return klass;
-    }
-  
-    return undefined;
+    return str;
   }
 }

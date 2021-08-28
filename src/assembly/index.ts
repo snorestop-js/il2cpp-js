@@ -1,32 +1,32 @@
+import { Il2CppReference } from "../reference";
 import { Il2CppImage } from "../image";
-import { inspect } from "util";
+import util from "util"
 
-export class Il2CppAssembly {
-  private static cache: Map<IntPtr<"Il2CppAssembly">, Il2CppAssembly> = new Map();
-
-  private constructor(
-    private ptr: IntPtr<"Il2CppAssembly">,
-  ) {
-    if (ptr === 0) throw new Error("Constructed Il2CppAssembly with NullPtr");
-
-    Il2CppAssembly.cache.set(ptr, this);
-  }
-
-  static fromPointer(pointer: IntPtr<"Il2CppAssembly">) {
-    if (this.cache.has(pointer)) return this.cache.get(pointer)!;
-
-    return new Il2CppAssembly(pointer);
-  }
-
-  [inspect.custom](): string {
-    return `[IL2CPP Assembly (0x${this.ptr.toString(16).padStart(8, "0")})]`
-  }
-
-  getPointer(): IntPtr<"Il2CppAssembly"> {
-    return this.ptr;
+export class Il2CppAssembly extends Il2CppReference<"Il2CppAssembly"> {
+  [util.inspect.custom](): string {
+    return `[Il2CppAssembly (${this.getPointer().toString(16).padStart(8, "0")})] { \n  name: "${this.getName()}"\n  image: ${this.getImage()[util.inspect.custom]().split("\n").map(n => `  ${n}`).join("\n").slice(2)}\n}`
   }
 
   getImage(): Il2CppImage {
-    return Il2CppImage.fromPointer(__IL2CPP.il2cpp_assembly_get_image(this.ptr));
+    return __IL2CPP.il2cpp_assembly_get_image(this.getPointer()).asPointer().of(Il2CppImage);
+  }
+
+  getName(): string {
+    const [aname] = new Int32Array(__IL2CPP.snorestop_create_buffer_readonly(4, this.getPointer() + 16));
+    // const stringIndex = MemoryView.fromPointer(this.getPointer()).readI32(16);
+
+    let i = 0;
+    let currChar = 0;
+    let str = "";
+
+    do {
+      currChar = new Uint8Array(__IL2CPP.snorestop_create_buffer_readonly(1, aname + (i++)))[0]
+
+      if (currChar !== 0) {
+        str += String.fromCharCode(currChar);
+      }
+    } while (currChar !== 0)
+
+    return str;
   }
 }
