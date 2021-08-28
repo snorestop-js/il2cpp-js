@@ -1,5 +1,3 @@
-type SnorestopArrayBuffer<T> = ArrayBuffer & { ptr: IntPtr<T> }
-
 namespace __IL2CPP {
   function il2cpp_init(domain_name: string): number;
   function il2cpp_shutdown(): void;
@@ -12,7 +10,7 @@ namespace __IL2CPP {
   function il2cpp_get_corlib(): IntPtr<"Il2CppImage">;
   function il2cpp_add_internal_call(name: string, methodPtr: IntPtr<"Il2CppMethodPointer">): void;
   function il2cpp_resolve_icall(name: string): IntPtr<"Il2CppMethodPointer">;
-  function il2cpp_alloc<T>(size: number): SnorestopArrayBuffer<T>;
+  function il2cpp_alloc<T>(size: number): MemoryView<T>;
   function il2cpp_free(ptr: IntPtr<any>): void;
 
   function il2cpp_array_class_get(element_class: IntPtr<"Il2CppClass">, rank: number): IntPtr<"Il2CppClass">;
@@ -91,15 +89,13 @@ namespace __IL2CPP {
   function il2cpp_field_get_parent(field: IntPtr<"FieldInfo">): IntPtr<"Il2CppClass">;
   function il2cpp_field_get_offset(field: IntPtr<"FieldInfo">): number;
   function il2cpp_field_get_type(field: IntPtr<"FieldInfo">): IntPtr<"Il2CppType">;
-  function il2cpp_field_get_value(object: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, asBuffer: true, bufferSize: number): ArrayBuffer;
-  function il2cpp_field_get_value(object: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, asBuffer: false, bufferSize: number): number;
+  function il2cpp_field_get_value(object: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">): MemoryView;
   function il2cpp_field_get_value_object(object: IntPtr<"FieldInfo">, obj: IntPtr<"Il2CppObject">): IntPtr<"Il2CppObject">;
   function il2cpp_field_has_attribute(field: IntPtr<"FieldInfo">, attr_class: IntPtr<"Il2CppClass">): boolean;
-  function il2cpp_field_set_value(obj: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, value: SnorestopArrayBuffer<any>): void;
+  function il2cpp_field_set_value(obj: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, value: MemoryView): void;
   function il2cpp_field_set_value_object(objectInstance: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, value: IntPtr<"Il2CppObject">): void;
-  function il2cpp_field_static_get_value(field: IntPtr<"FieldInfo">, asBuffer: true, bufferSize: number): ArrayBuffer;
-  function il2cpp_field_static_get_value(field: IntPtr<"FieldInfo">, asBuffer: false, bufferSize: number): number;
-  function il2cpp_field_static_set_value(field: IntPtr<"FieldInfo">, value: SnorestopArrayBuffer<any>): void;
+  function il2cpp_field_static_get_value(field: IntPtr<"FieldInfo">): MemoryView;
+  function il2cpp_field_static_set_value(field: IntPtr<"FieldInfo">, value: MemoryView): void;
   function il2cpp_field_is_literal(field: IntPtr<"FieldInfo">): boolean;
 
   function il2cpp_gc_collect(maxGenerations: number): void;
@@ -237,9 +233,6 @@ namespace __IL2CPP {
   function il2cpp_class_set_userdata(klass: IntPtr<"Il2CppClass">, userdata: IntPtr<any>): void;
   function il2cpp_class_get_userdata_offset(): number;
   function il2cpp_class_for_each(callback: (klass: IntPtr<"Il2CppClass">, userData: IntPtr<any>) => void, userData: IntPtr<any>): void;
-
-  function snorestop_create_buffer<T>(size: number, ptr?: number): SnorestopArrayBuffer<T>
-  function snorestop_create_buffer_readonly<T>(size: number, ptr?: number): SnorestopArrayBuffer<T>
 }
 
 declare class MemoryView<T> {
@@ -257,7 +250,7 @@ declare class MemoryView<T> {
   readF64(byteIndex?: number): number;
   readCString(byteIndex?: number): string;
   readString(length: number, byteIndex?: number): string;
-  readPointer<T2 = any>(byteIndex?: number): MemoryView<T2>;
+  readPtr<T2 = any>(byteIndex?: number): MemoryView<T2>;
   writeU8(value: number, byteIndex?: number): void;
   writeI8(value: number, byteIndex?: number): void;
   writeU16(value: number, byteIndex?: number): void;

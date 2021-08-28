@@ -12,15 +12,13 @@ export class Il2CppAssembly extends Il2CppReference<"Il2CppAssembly"> {
   }
 
   getName(): string {
-    const [aname] = new Int32Array(__IL2CPP.snorestop_create_buffer_readonly(4, this.getPointer() + 16));
-    // const stringIndex = MemoryView.fromPointer(this.getPointer()).readI32(16);
+    const stringPtr = MemoryView.fromPointer(this.getPointer()).readPtr(16);
 
-    let i = 0;
     let currChar = 0;
     let str = "";
 
     do {
-      currChar = new Uint8Array(__IL2CPP.snorestop_create_buffer_readonly(1, aname + (i++)))[0]
+      currChar = stringPtr.readU8();
 
       if (currChar !== 0) {
         str += String.fromCharCode(currChar);
