@@ -1,8 +1,13 @@
-import { Il2CppClass } from "../class";
-import { Il2CppObject } from "../object";
 import { Il2CppReference } from "../reference";
+import { Il2CppObject } from "../object";
+import { Il2CppClass } from "../class";
+import util from "util";
 
 export class Il2CppType extends Il2CppReference<"Il2CppType"> {
+  [util.inspect.custom](): string {
+    return `[Il2CppReflectionType (${this.getPointer().toString(16).padStart(8, "0")})] { \n  name: "${this.getName()}"\n  isStatic: ${this.isStatic()}\n  isByReference: ${this.isByReference()}\n  isPointerType: ${this.isPointerType()}\n  assemblyQualifiedName: ${this.getAssemblyQualifiedName()}\n  attributes: ${this.getAssemblyQualifiedName()}\n  classOrElementClass: ${this.getClassOrElementClass()[util.inspect.custom]().split("\n").join("\n  ")}\n  object: ${this.getObject()[util.inspect.custom]().split("\n").join("\n  ")}\n}`
+  }
+
   equals(type: Il2CppType): boolean {
     return __IL2CPP.il2cpp_type_equals(this.getPointer(), type.getPointer());
   }

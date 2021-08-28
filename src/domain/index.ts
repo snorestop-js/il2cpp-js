@@ -20,19 +20,6 @@ export class Il2CppDomain extends Il2CppReference<"Il2CppDomain"> {
   }
 
   getName(): string {
-    const stringPtr = MemoryView.fromPointer(this.getPointer()).readPtr(12);
-
-    let currChar = 0;
-    let str = "";
-
-    do {
-      currChar = stringPtr.readU8();
-
-      if (currChar !== 0) {
-        str += String.fromCharCode(currChar);
-      }
-    } while (currChar !== 0)
-
-    return str;
+    return MemoryView.fromPointer(MemoryView.fromPointer(this.getPointer()).readPtr(12)).readCString();
   }
 }

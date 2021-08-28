@@ -1,8 +1,13 @@
 import { Il2CppClass } from "../class";
 import { Il2CppReference } from "../reference";
 import { Il2CppType } from "../type";
+import util from "util";
 
 export class Il2CppFieldInfo extends Il2CppReference<"FieldInfo"> {
+  [util.inspect.custom](): string {
+    return `[Il2CppFieldInfo (${this.getPointer().toString(16).padStart(8, "0")})] { \n  name: "${this.getName()}"\n  type: ${this.getType()[util.inspect.custom]().split("\n").join("\n  ")},\n  parent: ${this.getParent()[util.inspect.custom]().split("\n").join("\n  ")}\n}`
+  }
+
   getFlags(): number {
     return __IL2CPP.il2cpp_field_get_flags(this.getPointer());
   }

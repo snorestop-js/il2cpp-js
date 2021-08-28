@@ -1,4 +1,10 @@
+import util from "util";
+
 export class Il2CppReference<T = any> {
+  [util.inspect.custom](): string {
+    return `[Il2CppReference (${this.getPointer().toString(16).padStart(8, "0")})]`
+  }
+
   constructor(private readonly pointer: IntPtr<T>) {
     if (pointer === 0) {
       throw new Error("Il2CppReference constructed with nullptr")

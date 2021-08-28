@@ -5,7 +5,7 @@ import { Il2CppReference } from "../reference";
 import util from "util";
 export class Il2CppImage extends Il2CppReference<"Il2CppImage"> {
   [util.inspect.custom](): string {
-    return `[Il2CppDomain (${this.getPointer().toString(16).padStart(8, "0")})] { \n  name: "${this.getName()}"\n  classCount: ${this.getClassCount()}\n}`
+    return `[Il2CppImage (${this.getPointer().toString(16).padStart(8, "0")})] { \n  name: "${this.getName()}"\n  classCount: ${this.getClassCount()}\n}`
   }
 
   getAssembly(): Il2CppAssembly {

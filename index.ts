@@ -32,3 +32,4 @@ export { Il2CppPropertyInfo } from "./src/propertyInfo";
 export { Il2CppReference } from "./src/reference";
 export { Il2CppReflectionType } from "./src/reflectionType";
 export { Il2CppType } from "./src/type";
+export { Il2CppString } from "./src/string";

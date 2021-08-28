@@ -248,9 +248,10 @@ declare class MemoryView<T> {
   readI64(byteIndex?: number): bigint;
   readF32(byteIndex?: number): number;
   readF64(byteIndex?: number): number;
-  readCString(byteIndex?: number): string;
+  readCString(isUtf16: boolean, byteIndex?: number): string;
+  readCString(isUtf16: boolean = false): string;
   readString(length: number, byteIndex?: number): string;
-  readPtr<T2 = any>(byteIndex?: number): MemoryView<T2>;
+  readPtr<T2 = any>(byteIndex?: number): IntPtr<T2>;
   writeU8(value: number, byteIndex?: number): void;
   writeI8(value: number, byteIndex?: number): void;
   writeU16(value: number, byteIndex?: number): void;
