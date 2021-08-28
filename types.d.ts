@@ -235,6 +235,8 @@ namespace __IL2CPP {
   function il2cpp_class_for_each(callback: (klass: IntPtr<"Il2CppClass">, userData: IntPtr<any>) => void, userData: IntPtr<any>): void;
 }
 
+declare function create_js_gc_handle(callback_on_free: () => void): unknown;
+
 declare class MemoryView<T> {
   static alloc(size: number): MemoryView<T>;
   static fromPointer(ptr: IntPtr<T>): MemoryView<T>;
@@ -250,7 +252,8 @@ declare class MemoryView<T> {
   readF64(byteIndex?: number): number;
   readCString(isUtf16: boolean, byteIndex?: number): string;
   readCString(isUtf16: boolean = false): string;
-  readString(length: number, byteIndex?: number): string;
+  readString(length: number, isUtf16: boolean, byteIndex?: number): string;
+  readString(length: number, isUtf16: boolean = false): string;
   readPtr<T2 = any>(byteIndex?: number): IntPtr<T2>;
   writeU8(value: number, byteIndex?: number): void;
   writeI8(value: number, byteIndex?: number): void;

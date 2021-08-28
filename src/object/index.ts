@@ -4,6 +4,31 @@ import { Il2CppReference } from "../reference";
 import util from "util";
 
 export class Il2CppObject<T = "Il2CppObject"> extends Il2CppReference<T> {
+  private readonly handle: number;
+  private readonly jsGcHandle: unknown;
+
+  constructor(pointer: IntPtr<T>) {
+    // we don't want to access this object directly, so throw errors if it gets used
+    super(-1);
+
+    //TODO: Proper pinned object support
+    this.handle = __IL2CPP.il2cpp_gchandle_new(pointer, false);
+    const handle = new Number(this.handle);
+    this.jsGcHandle = create_js_gc_handle(() => {
+      __IL2CPP.il2cpp_gchandle_free(handle.valueOf());
+    });
+  }
+
+  getPointer(): IntPtr<T> {
+    const handleTarget: IntPtr<T> = __IL2CPP.il2cpp_gchandle_get_target(this.handle);
+
+    if (handleTarget === 0) {
+      throw new Error("Object garbage collected in il2cpp space");
+    }
+
+    return handleTarget;
+  }
+
   static new(klass: Il2CppClass): Il2CppObject {
     return __IL2CPP.il2cpp_object_new(klass.getPointer()).asPointer().of(Il2CppObject);
   }
