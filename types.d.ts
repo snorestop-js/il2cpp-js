@@ -51,7 +51,7 @@ namespace __IL2CPP {
   function il2cpp_class_num_fields(klass: IntPtr<"Il2CppClass">): number;
   function il2cpp_class_is_valuetype(klass: IntPtr<"Il2CppClass">): boolean;
   function il2cpp_class_is_blittable(klass: IntPtr<"Il2CppClass">): boolean;
-  function il2cpp_class_value_size(klass: IntPtr<"Il2CppClass">, align: number): number;
+  function il2cpp_class_value_size(klass: IntPtr<"Il2CppClass">): [result: number, alignment: number];
   function il2cpp_class_get_flags(klass: IntPtr<"Il2CppClass">): number;
   function il2cpp_class_is_abstract(klass: IntPtr<"Il2CppClass">): boolean;
   function il2cpp_class_is_interface(klass: IntPtr<"Il2CppClass">): boolean;
@@ -89,12 +89,12 @@ namespace __IL2CPP {
   function il2cpp_field_get_parent(field: IntPtr<"FieldInfo">): IntPtr<"Il2CppClass">;
   function il2cpp_field_get_offset(field: IntPtr<"FieldInfo">): number;
   function il2cpp_field_get_type(field: IntPtr<"FieldInfo">): IntPtr<"Il2CppType">;
-  function il2cpp_field_get_value(object: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">): MemoryView;
+  function il2cpp_field_get_value(object: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, allocationSize: number): MemoryView;
   function il2cpp_field_get_value_object(object: IntPtr<"FieldInfo">, obj: IntPtr<"Il2CppObject">): IntPtr<"Il2CppObject">;
   function il2cpp_field_has_attribute(field: IntPtr<"FieldInfo">, attr_class: IntPtr<"Il2CppClass">): boolean;
   function il2cpp_field_set_value(obj: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, value: MemoryView): void;
   function il2cpp_field_set_value_object(objectInstance: IntPtr<"Il2CppObject">, field: IntPtr<"FieldInfo">, value: IntPtr<"Il2CppObject">): void;
-  function il2cpp_field_static_get_value(field: IntPtr<"FieldInfo">): MemoryView;
+  function il2cpp_field_static_get_value(field: IntPtr<"FieldInfo">, allocationSize: number): MemoryView;
   function il2cpp_field_static_set_value(field: IntPtr<"FieldInfo">, value: MemoryView): void;
   function il2cpp_field_is_literal(field: IntPtr<"FieldInfo">): boolean;
 
@@ -130,7 +130,7 @@ namespace __IL2CPP {
 
   function il2cpp_method_get_return_type(method: IntPtr<"MethodInfo">): IntPtr<"Il2CppType">;
   function il2cpp_method_get_from_reflection(method: IntPtr<"Il2CppReflectionMethod">): IntPtr<"MethodInfo">;
-  function il2cpp_method_get_object(method: IntPtr<"MethodInfo">, refclass: IntPtr<"Il2CppClass">): IntPtr<"Il2CppReflectionMethod">;
+  function il2cpp_method_get_object(method: IntPtr<"MethodInfo">, refclass: IntPtr<"Il2CppClass">): IntHandle<"Il2CppReflectionMethod">;
   function il2cpp_method_get_name(method: IntPtr<"MethodInfo">): string;
   function il2cpp_method_is_generic(method: IntPtr<"MethodInfo">): boolean;
   function il2cpp_method_is_inflated(method: IntPtr<"MethodInfo">): boolean;
@@ -153,7 +153,7 @@ namespace __IL2CPP {
   function il2cpp_object_get_class(obj: IntPtr<"Il2CppObject">): IntPtr<"Il2CppClass">;
   function il2cpp_object_get_size(obj: IntPtr<"Il2CppObject">): number;
   function il2cpp_object_get_virtual_method(obj: IntPtr<"Il2CppObject">, method: IntPtr<"MethodInfo">): IntPtr<"MethodInfo">;
-  function il2cpp_object_new(klass: IntPtr<"Il2CppClass">): IntPtr<"Il2CppObject">;
+  function il2cpp_object_new(klass: IntPtr<"Il2CppClass">): IntHandle<"Il2CppObject">;
   function il2cpp_object_unbox(obj: IntPtr<"Il2CppObject">): IntPtr<any>;
   function il2cpp_value_box(klass: IntPtr<"Il2CppClass">, data: IntPtr<any>): IntPtr<"Il2CppObject">;
 
@@ -172,7 +172,7 @@ namespace __IL2CPP {
   function il2cpp_runtime_object_init_exception(obj: IntPtr<"Il2CppObject">, exc: IntPtr<IntPtr<"Il2CppException">>): void;
   function il2cpp_runtime_unhandled_exception_policy_set(value: Il2CppRuntimeUnhandledExceptionPolicy): void;
 
-  function il2cpp_string_new(string: string): IntPtr<"Il2CppString">;
+  function il2cpp_string_new(string: string): IntHandle<"Il2CppString">;
   function il2cpp_string_new_wrapper(string: string): IntPtr<"Il2CppString">;
   function il2cpp_string_new_len(string: string, length: number): IntPtr<"Il2CppString">;
   function il2cpp_string_intern(str: IntPtr<"Il2CppString">): IntPtr<"Il2CppString">;
@@ -195,7 +195,7 @@ namespace __IL2CPP {
   function il2cpp_set_default_thread_affinity(affinity_mask: bigint): void;
   function il2cpp_override_stack_backtrace(callback: (buffer: IntPtr<"Il2CppMethodPointer">, maxSize: number) => number): void;
 
-  function il2cpp_type_get_object(type: IntPtr<"Il2CppType">): IntPtr<"Il2CppObject">;
+  function il2cpp_type_get_object(type: IntPtr<"Il2CppType">): IntHandle<"Il2CppObject">;
   function il2cpp_type_get_type(type: IntPtr<"Il2CppType">): number;
   function il2cpp_type_get_class_or_element_class(type: IntPtr<"Il2CppType">): IntPtr<"Il2CppClass">;
   function il2cpp_type_get_name(type: IntPtr<"Il2CppType">): string;

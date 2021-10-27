@@ -78,7 +78,11 @@ export class Il2CppClass extends Il2CppReference<"Il2CppClass"> {
   }
 
   getAllFields(): Il2CppFieldInfo[] {
-    return __IL2CPP.il2cpp_class_get_fields(this.getPointer()).map(fieldPtr => fieldPtr.asPointer().of(Il2CppFieldInfo));
+    return __IL2CPP.il2cpp_class_get_fields(this.getPointer()).map(fieldPtr => {
+      __IL2CPP.il2cpp_gchandle_new(fieldPtr, true);
+
+      return fieldPtr.asPointer().of(Il2CppFieldInfo)
+    });
   }
 
   getFlags(): number {
@@ -197,7 +201,11 @@ export class Il2CppClass extends Il2CppReference<"Il2CppClass"> {
     return __IL2CPP.il2cpp_class_num_fields(this.getPointer());
   }
 
-  valueSize(align: number): number {
-    return __IL2CPP.il2cpp_class_value_size(this.getPointer(), align);
+  getValueSize(): number {
+    return __IL2CPP.il2cpp_class_value_size(this.getPointer())[0];
+  }
+
+  getValueAlignment(): number {
+    return __IL2CPP.il2cpp_class_value_size(this.getPointer())[1];
   }
 }

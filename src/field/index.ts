@@ -2,6 +2,7 @@ import { Il2CppClass } from "../class";
 import { Il2CppReference } from "../reference";
 import { Il2CppType } from "../type";
 import util from "util";
+import { Il2CppObject } from "../object";
 
 export class Il2CppFieldInfo extends Il2CppReference<"FieldInfo"> {
   [util.inspect.custom](): string {
@@ -34,5 +35,49 @@ export class Il2CppFieldInfo extends Il2CppReference<"FieldInfo"> {
 
   isLiteral(): boolean {
     return __IL2CPP.il2cpp_field_is_literal(this.getPointer())
+  }
+
+  getSize(): number {
+    return Il2CppClass.fromType(this.getType()).getValueSize();
+  }
+
+  getValue(object?: Il2CppObject): any {
+    const size = this.getSize();
+
+    console.log("SIZE", this.getType().getClassOrElementClass().getName(), size);
+
+    if (this.getType().isStatic()) {
+      if (object) {
+        throw new Error("Including object reference for static getValue call");
+      }
+
+      return this.getType().parseValue(__IL2CPP.il2cpp_field_static_get_value(this.getPointer(), size));
+    } else {
+      if (!object) {
+        throw new Error("Missing object reference for non-static getValue call");
+      }
+
+      return this.getType().parseValue(__IL2CPP.il2cpp_field_get_value(object.getPointer(), this.getPointer(), size));
+    }
+  }
+
+  getValuePointer(object?: Il2CppObject): IntPtr<any> {
+    const size = this.getSize();
+
+    console.log("SIZE", this.getType().getClassOrElementClass().getName(), size);
+
+    if (this.getType().isStatic()) {
+      if (object) {
+        throw new Error("Including object reference for static getValue call");
+      }
+
+      return __IL2CPP.il2cpp_field_static_get_value(this.getPointer(), size).getHead();
+    } else {
+      if (!object) {
+        throw new Error("Missing object reference for non-static getValue call");
+      }
+
+      return __IL2CPP.il2cpp_field_get_value(object.getPointer(), this.getPointer(), size).getHead();
+    }
   }
 }

@@ -1,36 +1,15 @@
 import { Il2CppClass } from "../class";
-import { Il2CppMethodInfo } from "../method";
-import { Il2CppReference } from "../reference";
+// import { Il2CppMethodInfo } from "../method";
 import util from "util";
+import { Il2CppHandle } from "../handle";
 
-export class Il2CppObject<T = "Il2CppObject"> extends Il2CppReference<T> {
-  private readonly handle: number;
-  private readonly jsGcHandle: unknown;
-
-  constructor(pointer: IntPtr<T>) {
-    // we don't want to access this object directly, so throw errors if it gets used
-    super(-1);
-
-    //TODO: Proper pinned object support
-    this.handle = __IL2CPP.il2cpp_gchandle_new(pointer, false);
-    const handle = new Number(this.handle);
-    this.jsGcHandle = create_js_gc_handle(() => {
-      __IL2CPP.il2cpp_gchandle_free(handle.valueOf());
-    });
-  }
-
-  getPointer(): IntPtr<T> {
-    const handleTarget: IntPtr<T> = __IL2CPP.il2cpp_gchandle_get_target(this.handle);
-
-    if (handleTarget === 0) {
-      throw new Error("Object garbage collected in il2cpp space");
-    }
-
-    return handleTarget;
-  }
-
+export class Il2CppObject<T = "Il2CppObject"> extends Il2CppHandle<T> {
   static new(klass: Il2CppClass): Il2CppObject {
-    return __IL2CPP.il2cpp_object_new(klass.getPointer()).asPointer().of(Il2CppObject);
+    return __IL2CPP.il2cpp_object_new(klass.getPointer()).asHandle().to(Il2CppObject);
+  }
+
+  static box(klass: Il2CppClass, value: any): Il2CppObject {
+    return __IL2CPP.il2cpp_value_box(klass.getPointer(), value).asHandle().to(Il2CppObject);
   }
 
   static getHeaderSize(): number {
@@ -49,9 +28,9 @@ export class Il2CppObject<T = "Il2CppObject"> extends Il2CppReference<T> {
     return __IL2CPP.il2cpp_object_get_size(this.getPointer());
   }
 
-  getVirtualMethod(method: Il2CppMethodInfo): Il2CppMethodInfo {
-    return __IL2CPP.il2cpp_object_get_virtual_method(this.getPointer(), method.getPointer()).asPointer().of(Il2CppMethodInfo);
-  }
+  // getVirtualMethod(method: Il2CppMethodInfo): Il2CppMethodInfo {
+  //   return __IL2CPP.il2cpp_object_get_virtual_method(this.getPointer(), method.getPointer()).asPointer().of(Il2CppMethodInfo);
+  // }
 
   unbox(): IntPtr<unknown> {
     return __IL2CPP.il2cpp_object_unbox(this.getPointer());

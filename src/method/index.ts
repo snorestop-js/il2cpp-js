@@ -3,6 +3,7 @@ import util from "util";
 import { Il2CppType } from "../type";
 import { Il2CppClass } from "../class";
 import { Il2CppObject } from "../object";
+import { Il2CppException } from "../exception";
 
 export class Il2CppMethodInfo extends Il2CppReference<"MethodInfo"> {
   static getFromReflection(object: Il2CppObject): Il2CppMethodInfo {
@@ -22,7 +23,7 @@ export class Il2CppMethodInfo extends Il2CppReference<"MethodInfo"> {
   }
 
   getObject(refclass: Il2CppClass = this.getClass()): Il2CppObject {
-    return __IL2CPP.il2cpp_method_get_object(this.getPointer(), refclass.getPointer()).asPointer().of(Il2CppObject);
+    return __IL2CPP.il2cpp_method_get_object(this.getPointer(), refclass.getPointer()).asHandle().to(Il2CppObject);
   }
 
   hasAttribute(attribute: Il2CppClass): boolean {
@@ -81,5 +82,61 @@ export class Il2CppMethodInfo extends Il2CppReference<"MethodInfo"> {
     }
 
     return params;
+  }
+
+  staticInvokeConvertArgs(...params: Il2CppObject[]): Il2CppObject {
+    let exceptionPtr = MemoryView.alloc(4);
+
+    exceptionPtr.writeU32(0, 0);
+
+    let result = __IL2CPP.il2cpp_runtime_invoke_convert_args(this.getPointer(), 0, params.map(p => p.getPointer()), exceptionPtr.getHead());
+
+    if (exceptionPtr.readU32(0) !== 0) {
+      throw exceptionPtr.readU32(0).asPointer().of(Il2CppException)
+    }
+
+    return result.asPointer().of(Il2CppObject)
+  }
+
+  invokeConvertArgs(bindThis: Il2CppObject, ...params: Il2CppObject[]): Il2CppObject {
+    let exceptionPtr = MemoryView.alloc(4);
+
+    exceptionPtr.writeU32(0, 0);
+
+    let result = __IL2CPP.il2cpp_runtime_invoke_convert_args(this.getPointer(), bindThis.getPointer(), params.map(p => p.getPointer()), exceptionPtr.getHead());
+
+    if (exceptionPtr.readU32(0) !== 0) {
+      throw exceptionPtr.readU32(0).asPointer().of(Il2CppException)
+    }
+
+    return result.asPointer().of(Il2CppObject);
+  }
+
+  staticInvoke(...params: IntPtr<any>[]): Il2CppObject {
+    let exceptionPtr = MemoryView.alloc(4);
+
+    exceptionPtr.writeU32(0, 0);
+
+    let result = __IL2CPP.il2cpp_runtime_invoke(this.getPointer(), 0, params, exceptionPtr.getHead());
+
+    if (exceptionPtr.readU32(0) !== 0) {
+      throw exceptionPtr.readU32(0).asPointer().of(Il2CppException)
+    }
+
+    return result.asPointer().of(Il2CppObject);
+  }
+
+  invoke(bindThis: Il2CppObject, ...params: IntPtr<any>[]): Il2CppObject {
+    let exceptionPtr = MemoryView.alloc(4);
+
+    exceptionPtr.writeU32(0, 0);
+
+    let result = __IL2CPP.il2cpp_runtime_invoke(this.getPointer(), bindThis.getPointer(), params, exceptionPtr.getHead());
+
+    if (exceptionPtr.readU32(0) !== 0) {
+      throw exceptionPtr.readU32(0).asPointer().of(Il2CppException)
+    }
+
+    return result.asPointer().of(Il2CppObject);
   }
 }
